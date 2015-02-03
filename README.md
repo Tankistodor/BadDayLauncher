@@ -1,1 +1,1 @@
-# BadDayLauncher
+BadDayLauncher
