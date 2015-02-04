@@ -59,20 +59,30 @@ import javax.swing.JCheckBox;
 import java.awt.Font;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 /**
  * 
  * @author DimanA90
+ * 
  */
 public class MainForm extends javax.swing.JFrame {
 	// private javax.swing.JButton ButtonBugLink;
 	private static javax.swing.JButton ButtonLogin;
 	private javax.swing.JCheckBox CheckBoxSave;
 	public javax.swing.JComboBox ComboBoxSelectClient;
+	public javax.swing.JComboBox comboBoxMemSettings;
 	private static javax.swing.JEditorPane EditorPaneNews;
 	// private javax.swing.JLabel LabelRegistration;
 	private javax.swing.JLabel LabelStatus;
@@ -135,7 +145,11 @@ public class MainForm extends javax.swing.JFrame {
 		CheckBoxSave = new javax.swing.JCheckBox();
 		ButtonLogin = new javax.swing.JButton();
 		LabelStatus = new javax.swing.JLabel();
+		
+		comboBoxMemSettings = new JComboBox();
+
 		ComboBoxSelectClient = new javax.swing.JComboBox();
+		ComboBoxSelectClient.setToolTipText("Выберете сервер из списка ниже");
 		// LabelRegistration = new javax.swing.JLabel();
 		LabelStatusText = new javax.swing.JLabel();
 		// ButtonBugLink = new javax.swing.JButton();
@@ -270,6 +284,23 @@ public class MainForm extends javax.swing.JFrame {
 
 		CheckBoxShaders.setSelected(Utils.getShadersEnable(GlobalVar.itemsServers[GlobalVar.CurrentServer]));
 		
+		
+		comboBoxMemSettings.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == e.SELECTED) {
+				  GlobalVar.clientMemory = comboBoxMemSettings.getSelectedIndex();
+				}
+			}
+		});
+		comboBoxMemSettings.setToolTipText("Объем выделенной оперативной памяти");
+		comboBoxMemSettings.setModel(new DefaultComboBoxModel(new String[] {"Память - Авто", "Память - 2 Gb", "Память - 3 Gb", "Память - 4 Gb", "Память - 6 Gb"}));
+		
+		if (GlobalVar.clientMemory < comboBoxMemSettings.getItemCount()) {
+			comboBoxMemSettings.setSelectedIndex(GlobalVar.clientMemory);
+		} else {
+			comboBoxMemSettings.setSelectedIndex(0);
+		}
+		
 		javax.swing.GroupLayout panelControlsLayout = new javax.swing.GroupLayout(
 				panelControls);
 		panelControlsLayout.setHorizontalGroup(
@@ -277,8 +308,8 @@ public class MainForm extends javax.swing.JFrame {
 				.addGroup(panelControlsLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(panelControlsLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(CheckBoxShaders)
 						.addComponent(TextPaneClientInfo, GroupLayout.DEFAULT_SIZE, 210, Short.MAX_VALUE)
+						.addComponent(CheckBoxShaders)
 						.addGroup(panelControlsLayout.createSequentialGroup()
 							.addGroup(panelControlsLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(LabelUsername)
@@ -287,7 +318,6 @@ public class MainForm extends javax.swing.JFrame {
 							.addGroup(panelControlsLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(PasswordField, 146, 146, 146)
 								.addComponent(textFieldUsername, 146, 146, 146)))
-						.addComponent(ComboBoxSelectClient, 0, 210, Short.MAX_VALUE)
 						.addGroup(panelControlsLayout.createSequentialGroup()
 							.addComponent(CheckBoxSave)
 							.addGap(26)
@@ -295,7 +325,9 @@ public class MainForm extends javax.swing.JFrame {
 						.addGroup(panelControlsLayout.createSequentialGroup()
 							.addComponent(LabelStatus)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(LabelStatusText, GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)))
+							.addComponent(LabelStatusText, GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE))
+						.addComponent(comboBoxMemSettings, 0, 210, Short.MAX_VALUE)
+						.addComponent(ComboBoxSelectClient, 0, 210, Short.MAX_VALUE))
 					.addContainerGap())
 		);
 		panelControlsLayout.setVerticalGroup(
@@ -315,14 +347,16 @@ public class MainForm extends javax.swing.JFrame {
 						.addComponent(CheckBoxSave))
 					.addGap(10)
 					.addComponent(CheckBoxShaders)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(comboBoxMemSettings, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(panelControlsLayout.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(LabelStatus, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(LabelStatusText, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGroup(panelControlsLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(LabelStatusText, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(LabelStatus))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(ComboBoxSelectClient, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(TextPaneClientInfo, GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
+					.addComponent(TextPaneClientInfo, GroupLayout.PREFERRED_SIZE, 447, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
 		panelControlsLayout.setHonorsVisibility(false);

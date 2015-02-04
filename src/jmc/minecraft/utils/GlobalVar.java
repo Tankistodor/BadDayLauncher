@@ -39,6 +39,7 @@ public class GlobalVar {
     //User info
     public static String userName = "User name";
     public static String password = "password";
+    public static int clientMemory = 0;
     public static String latestVersion;
     public static String downloadTicket;
     public static String sessionId;
@@ -61,6 +62,11 @@ public class GlobalVar {
     
     public static boolean ForceUpdate = false;
     public static boolean isOnline;
+    
+    public static void setCurrentMem(long num){
+    	clientMemory = (int) num;
+    }
+    
     public static void setCurrentServer(long num){
         CurrentServer = (int) num;
     }

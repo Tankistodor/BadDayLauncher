@@ -60,25 +60,52 @@ public class MCGameRuner {
 		Utils.LogPrintConsole("Установка памяти");
 		String rmax = Utils.getRamMax();
         boolean memorySet = false;
-        try {
-            int min = 256;
-            if (rmax != null && Integer.parseInt(rmax) > 0) {
-            	params.add("-Xms" + min + "M");
-            	Utils.LogPrintConsole("Ставим MinMemory " + min);
-            	params.add("-Xmx" + rmax + "M");
-                Utils.LogPrintConsole("Ставим MaxMemory " + rmax);
-                memorySet = true;
-            }
-        } catch (Exception e) {
-        	Utils.LogPrintConsole("Error parsing memory settings "+ e);
-        }
-        if (!memorySet) {
-        	params.add("-Xms" + 256 + "M");
-        	Utils.LogPrintConsole("Defaulting MinMemory to " + 256);
-        	params.add("-Xmx" + 1024 + "M");
-            Utils.LogPrintConsole("Defaulting MaxMemory to " + 1024);
-        }
-		
+        
+		if (GlobalVar.clientMemory == 0) {
+			// Auto alloc memory
+			try {
+				int min = 256;
+				if (rmax != null && Integer.parseInt(rmax) > 0) {
+					params.add("-Xms" + min + "M");
+					Utils.LogPrintConsole("Ставим MinMemory " + min);
+					params.add("-Xmx" + rmax + "M");
+					Utils.LogPrintConsole("Ставим MaxMemory " + rmax);
+					memorySet = true;
+				}
+			} catch (Exception e) {
+				Utils.LogPrintConsole("Error parsing memory settings " + e);
+			}
+			if (!memorySet) {
+				params.add("-Xms" + 256 + "M");
+				Utils.LogPrintConsole("Defaulting MinMemory to " + 256);
+				params.add("-Xmx" + 1024 + "M");
+				Utils.LogPrintConsole("Defaulting MaxMemory to " + 1024);
+			}
+		}
+		else {
+			int userMem = 1024;
+			switch (GlobalVar.clientMemory) {
+			case 1:
+				userMem = 2048;
+				break;
+			case 2:
+				userMem = 3072;
+				break;
+			case 3:
+				userMem = 4096;
+				break;
+			case 4:
+				userMem = 6144;
+				break;
+			default:
+				break;
+			}
+			params.add("-Xms" + 256 + "M");
+			Utils.LogPrintConsole("Defaulting MinMemory to " + 256);
+			params.add("-Xmx" + userMem + "M");
+			Utils.LogPrintConsole("Defaulting MaxMemory to " + userMem);
+			memorySet = true;
+		}
         // PermSize
         String maxPermSize = null;
         if (Utils.getPlatform().equals(Utils.OS.windows)) {
@@ -325,6 +352,7 @@ public class MCGameRuner {
 		pb.directory(new File(ClientFolderPath));
 		pb.redirectErrorStream(true);
 		pb.redirectOutput(log);
+		
 		try {
 			pb.start();
 			// Process process = pb.start();
