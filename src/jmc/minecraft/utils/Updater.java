@@ -173,7 +173,7 @@ protected void UnpackArchives(JProgressBar progressCurr,JProgressBar progressBar
         try {
                    Utils.deleteDirectory(getWorkingDirectory() + File.separator + GlobalVar.itemsServers[GlobalVar.CurrentServer]+ File.separator+".minecraft"+ File.separator+FileList[i].substring(0, FileList[i].length()-4));   //Рекурсивно вычищаем ее
                    if (FileList[i].equals("other.zip")) {
-                	   Utils.deleteDirectory(getWorkingDirectory() + File.separator + GlobalVar.itemsServers[GlobalVar.CurrentServer]+ File.separator+".minecraft"+ File.separator+"config");   //Рекурсивно вычищаем ее
+                	   //Utils.deleteDirectory(getWorkingDirectory() + File.separator + GlobalVar.itemsServers[GlobalVar.CurrentServer]+ File.separator+".minecraft"+ File.separator+"config");   //Рекурсивно вычищаем ее
                 	   File t = new File(getWorkingDirectory() + File.separator + GlobalVar.itemsServers[GlobalVar.CurrentServer]+ File.separator+".minecraft"+ File.separator+"idfixminus.txt");
                 	   if (t.exists()) t.delete();
                 	   t = new File(getWorkingDirectory() + File.separator + GlobalVar.itemsServers[GlobalVar.CurrentServer]+ File.separator+".minecraft"+ File.separator+"servers.dat");
